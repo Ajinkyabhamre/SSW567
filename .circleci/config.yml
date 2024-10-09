@@ -1,0 +1,31 @@
+version: 2.1
+
+jobs:
+  test:
+    docker:
+      - image: circleci/python:3.8  # You can adjust the Python version if needed
+    steps:
+      - checkout  # Check out the code
+
+      # Set up the environment (in this case, it's Python, so install dependencies if any)
+      - run:
+          name: Install dependencies
+          command: |
+            python -m pip install --upgrade pip
+
+      # Add Hw-02a directory to PYTHONPATH
+      - run:
+          name: Set PYTHONPATH
+          command: |
+            export PYTHONPATH=$PYTHONPATH:$PWD/hw-02a
+
+      # Run the unit tests by specifying the relative path to TestTriangle.py
+      - run:
+          name: Run unit tests
+          command: python -m unittest hw-02a/TestTriangle.py
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
